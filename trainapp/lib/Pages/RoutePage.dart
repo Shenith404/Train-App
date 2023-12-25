@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:trainapp/Widgets/Route.dart';
+import 'package:trainapp/Entities/TrainRoute.dart';
+import 'package:trainapp/Widgets/RouteWidget.dart';
 
 class RoutePage extends StatefulWidget {
   const RoutePage({super.key});
@@ -9,53 +10,28 @@ class RoutePage extends StatefulWidget {
 }
 
 class _RoutePageState extends State<RoutePage> {
+  final list = TrainRoute.routeList();
+
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Wrap(
-        children: [
-          route(
-            image: "assets/avatar.jpg",
-            RouteName: "Kandy to Galle",
-            Members: 20,
-          ),
-          route(
-            image: "assets/avatar.jpg",
-            RouteName: "Kandy to Galle",
-            Members: 20,
-          ),
-          route(
-            image: "assets/avatar.jpg",
-            RouteName: "Kandy to Galle",
-            Members: 20,
-          ),
-          route(
-            image: "assets/avatar.jpg",
-            RouteName: "Kandy to Galle",
-            Members: 20,
-          ),
-          route(
-            image: "assets/avatar.jpg",
-            RouteName: "Kandy to Galle",
-            Members: 20,
-          ),
-          route(
-            image: "assets/avatar.jpg",
-            RouteName: "Kandy to Galle",
-            Members: 20,
-          ),
-          route(
-            image: "assets/avatar.jpg",
-            RouteName: "Kandy to Galle",
-            Members: 20,
-          ),
-          route(
-            image: "assets/avatar.jpg",
-            RouteName: "Kandy to Galle",
-            Members: 20,
-          ),
-        ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Train Routes'),
       ),
-    );
+      body: SingleChildScrollView(
+        child: Center(
+          child: Wrap(
+            children: <Widget>[
+              for (var li in list)
+                RouteWidget(
+                  Members: 10,
+                  image: "assets/train.jpg",
+                  routeName: li.routeName,
+                ),
+            ],
+          ),
+        ),
+      ),
+    );s
   }
 }

@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:trainapp/Colours/Colors.dart';
 
-class route extends StatefulWidget {
+class RouteWidget extends StatefulWidget {
   final String image;
-  final String RouteName;
+  final String routeName;
   final int Members;
-  const route(
+  const RouteWidget(
       {super.key,
       required this.image,
-      required this.RouteName,
+      required this.routeName,
       required this.Members});
 
   @override
-  State<route> createState() => _routeState();
+  State<RouteWidget> createState() => _RouteWidgetState();
 }
 
-class _routeState extends State<route> {
+class _RouteWidgetState extends State<RouteWidget> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -29,7 +29,7 @@ class _routeState extends State<route> {
               color: secondaryColor,
               borderRadius: BorderRadius.circular(10),
               boxShadow: [
-                BoxShadow(
+                const BoxShadow(
                     color: primaryColor,
                     offset: Offset(0, 0),
                     blurRadius: 5,
@@ -45,7 +45,7 @@ class _routeState extends State<route> {
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height / 50),
                 Text(
-                  widget.RouteName,
+                  widget.routeName,
                   maxLines: 2,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
