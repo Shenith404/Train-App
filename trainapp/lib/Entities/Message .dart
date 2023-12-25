@@ -1,3 +1,4 @@
+import 'dart:math';
 
 import "package:trainapp/Entities/User.dart";
 
@@ -20,4 +21,38 @@ class Message {
 
   String get content => _content;
   set content(String value) => _content = value;
+
+  static List<Message> generateRandomMessages(int count) {
+    List<Message> messages = [];
+
+    for (int i = 1; i <= count; i++) {
+      messages.add(Message(
+        i.toString(),
+        null,
+        getRandomTimeSpan(),
+        getRandomContent(),
+      ));
+    }
+
+    return messages;
+  }
+
+  static String getRandomTimeSpan() {
+    final random = Random();
+    final hours = random.nextInt(24);
+    final minutes = random.nextInt(60);
+    return "$hours hours and $minutes minutes ago";
+  }
+
+  static String getRandomContent() {
+    List<String> sampleContent = [
+      "Hello!",
+      "Hi there!",
+      "Greetings!",
+      "How are you?",
+      "Flutter is awesome! sdkfg;dskf;sdkgfkdg kdgsajdfjsdfj asjdfl jasljfksdj flksdkajflsjlfkjsdlkfjsadj flskdjf;lkdsjflsj flksdjflksdjflksjdflj",
+    ];
+    final random = Random();
+    return sampleContent[random.nextInt(sampleContent.length)];
+  }
 }
