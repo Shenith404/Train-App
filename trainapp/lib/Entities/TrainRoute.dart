@@ -23,15 +23,15 @@ class TrainRoute {
   static List<TrainRoute> routeList() {
     return [
       TrainRoute("ru01", "Kandy to Galle", [], []),
-      TrainRoute("ru01", "Kandy to Galle", [], []),
-      TrainRoute("ru01", "Kandy to Galle", [], []),
-      TrainRoute("ru01", "Kandy to Galle", [], []),
-      TrainRoute("ru01", "Kandy to Galle", [], []),
-      TrainRoute("ru01", "Kandy to Galle", [], []),
-      TrainRoute("ru01", "Kandy to Galle", [], []),
-      TrainRoute("ru01", "Kandy to Galle", [], []),
-      TrainRoute("ru01", "Kandy to Galle", [], []),
-      TrainRoute("ru01", "Kandy to Galle", [], []),
+      TrainRoute("ru01", "Kandy to Matara", [], []),
+      TrainRoute("ru01", "Kandy to Colombo", [], []),
+      TrainRoute("ru01", "Kandy to Anuradapura", [], []),
+      TrainRoute("ru01", "Kandy to Matale", [], []),
+      TrainRoute("ru01", "Kandy to Kurunegala", [], []),
+      TrainRoute("ru01", "Kandy to Jaffna", [], []),
+      TrainRoute("ru01", "Kandy to Badulla", [], []),
+      TrainRoute("ru01", "Kandy to Polgahawela", [], []),
+      TrainRoute("ru01", "Kandy to Ella", [], []),
     ];
   }
 }

@@ -1,5 +1,7 @@
 import "package:flutter/material.dart";
-import "package:trainapp/Pages/ChatPage.dart";
+import "package:trainapp/Pages/Auth/LoginOrRegister.dart";
+import "package:trainapp/Pages/RoutePage.dart";
+
 
 void main(List<String> args) {
   runApp(MyApp());
@@ -10,13 +12,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: ChatPage(
-        routeName: "Kandy to Galle",
-        routeImage: "assets/train.jpg",
-        members: 20,
-      ),
-    );
+    return MaterialApp(debugShowCheckedModeBanner: false, home: RoutePage());
   }
 }
