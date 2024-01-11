@@ -1,7 +1,7 @@
 import 'package:trainapp/Entities/Message .dart';
-import "package:trainapp/Entities/User.dart";
+import 'package:trainapp/Entities/AppUser.dart';
 
 class Location extends Message {
-  Location(String locationName, User user, String timeSpan, String content)
+  Location(String locationName, AppUser user, String timeSpan, String content)
       : super("null", user, timeSpan, content);
 }

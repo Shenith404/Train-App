@@ -1,14 +1,15 @@
-class User {
-  String _userId = "null";
+class AppUser {
+  final String _AppUserId;
   String _email = "null";
   String _password = "null";
   String _role = "null";
   String? imageUrl;
 
-  User(this._userId, this._email, this._password, this._role, this.imageUrl);
+  AppUser(
+      this._AppUserId, this._email, this._password, this._role, this.imageUrl);
 
-  String get userId => _userId;
-  set userId(String value) => _userId = value;
+  String get AppUserId => _AppUserId;
+  //set AppUserId(String value) => _AppUserId = value;
 
   String get email => _email;
   set email(String value) => _email = value;

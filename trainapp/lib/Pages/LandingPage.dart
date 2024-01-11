@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import "package:trainapp/Colours/Colors.dart";
+import 'package:trainapp/Pages/Auth/LoginOrRegister.dart';
 
-
-class LandingPage  extends StatelessWidget {
-
-  const LandingPage ({Key? key});
+class LandingPage extends StatelessWidget {
+  const LandingPage({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +56,6 @@ class LandingPage  extends StatelessWidget {
             ],
           ),
 
-
           const SizedBox(
             height: 30,
           ),
@@ -74,7 +72,6 @@ class LandingPage  extends StatelessWidget {
             ),
           ),
 
-
           const SizedBox(
             height: 10,
           ),
@@ -89,14 +86,16 @@ class LandingPage  extends StatelessWidget {
             ),
           ),
 
-
           const SizedBox(
             height: 40,
           ),
 
           //Get Stated Button
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => LoginOrRegister()));
+            },
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 35),
               primary: primaryColor,

@@ -1,10 +1,10 @@
 import 'dart:math';
 
-import "package:trainapp/Entities/User.dart";
+import 'package:trainapp/Entities/AppUser.dart';
 
 class Message {
   String _messageId = "null";
-  User? _user;
+  AppUser? _user;
   String _timeSpan = "null";
   String _content = "null";
 
@@ -13,8 +13,8 @@ class Message {
   String get messageId => _messageId;
   set messageId(String value) => _messageId = value;
 
-  User? get user => _user;
-  set user(User? value) => _user = value;
+  AppUser? get user => _user;
+  set user(AppUser? value) => _user = value;
 
   String get timeSpan => _timeSpan;
   set timeSpan(String value) => _timeSpan = value;

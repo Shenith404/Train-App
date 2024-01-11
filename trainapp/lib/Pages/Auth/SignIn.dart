@@ -3,7 +3,7 @@ import 'package:trainapp/Colours/Colors.dart';
 
 class Signin extends StatefulWidget {
   final void Function()? changePage;
-  const Signin({super.key, required this.changePage});
+  Signin({super.key, required this.changePage});
 
   @override
   State<Signin> createState() => _SigninState();
@@ -93,150 +93,174 @@ class SIgnUpItems extends StatefulWidget {
 }
 
 class _SIgnUpItemsState extends State<SIgnUpItems> {
+  final _formKey = GlobalKey<FormState>();
   bool obcureText1 = true;
   bool obcureText2 = true;
   bool showIcon = true;
-
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30),
-        child: Column(
-          children: [
-            //Avatar
-            SizedBox(
-              height: MediaQuery.of(context).size.width / 2.5,
-            ),
-
-            CircleAvatar(
-              backgroundImage: const AssetImage("assets/avatar.jpg"),
-              radius: MediaQuery.of(context).size.width / 5.5,
-            ),
-
-            SizedBox(
-              height: MediaQuery.of(context).size.width / 15,
-            ),
-
-            // email
-            TextFormField(
-              obscureText: false,
-              decoration: const InputDecoration(
-                border: UnderlineInputBorder(
-                    borderSide: BorderSide(width: 3, color: primaryColor)),
-                labelText: 'Enter your Email',
-                hintText: 'e.g., john_doe@gmail.com', // Add a hint text
-                prefixIcon: Icon(Icons.email),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              //Avatar
+              SizedBox(
+                height: MediaQuery.of(context).size.width / 2.5,
               ),
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).size.width / 30,
-            ),
-            // password
-            TextFormField(
-              obscureText: obcureText2,
-              decoration: InputDecoration(
-                border: const UnderlineInputBorder(
-                  borderSide: BorderSide(width: 3, color: primaryColor),
-                ),
-                labelText: 'Enter your Password',
-                hintText: 'Abc@123',
-                prefixIcon: IconButton(
-                  icon: showIcon
-                      ? const Icon(Icons.remove_red_eye)
-                      : const Icon(Icons.remove_red_eye_outlined),
-                  onPressed: () {
-                    setState(() {
-                      obcureText2 = !obcureText2;
-                      showIcon = !showIcon;
-                    });
-                  },
+
+              CircleAvatar(
+                backgroundImage: const AssetImage("assets/avatar.jpg"),
+                radius: MediaQuery.of(context).size.width / 5.5,
+              ),
+
+              SizedBox(
+                height: MediaQuery.of(context).size.width / 15,
+              ),
+
+              // email
+              TextFormField(
+                keyboardType: TextInputType.emailAddress,
+                obscureText: false,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Plese Enter the Email";
+                  } else {
+                    return null;
+                  }
+                },
+                decoration: const InputDecoration(
+                  border: UnderlineInputBorder(
+                      borderSide: BorderSide(width: 3, color: primaryColor)),
+                  labelText: 'Enter your Email',
+                  hintText: 'e.g., john_doe@gmail.com', // Add a hint text
+                  prefixIcon: Icon(Icons.email),
                 ),
               ),
-            ),
-
-            SizedBox(
-              height: MediaQuery.of(context).size.width / 30,
-            ),
-
-            SizedBox(
-              height: MediaQuery.of(context).size.width / 15,
-            ),
-            // Register Button
-            ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 12, horizontal: 108),
-                primary: primaryColor,
-                onPrimary: const Color.fromARGB(255, 255, 255, 255),
+              SizedBox(
+                height: MediaQuery.of(context).size.width / 30,
               ),
 
-              //Button Text
-              child: const Text(
-                "Sign in",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
+              // password
+              TextFormField(
+                obscureText: obcureText2,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Plese Enter the Password";
+                  } else {
+                    return null;
+                  }
+                },
+                decoration: InputDecoration(
+                  border: const UnderlineInputBorder(
+                    borderSide: BorderSide(width: 3, color: primaryColor),
+                  ),
+                  labelText: 'Enter your Password',
+                  hintText: 'Abc@123',
+                  prefixIcon: IconButton(
+                    icon: showIcon
+                        ? const Icon(Icons.visibility_off)
+                        : const Icon(Icons.visibility),
+                    onPressed: () {
+                      setState(() {
+                        obcureText2 = !obcureText2;
+                        showIcon = !showIcon;
+                      });
+                    },
+                  ),
                 ),
               ),
-            ),
 
-            SizedBox(
-              height: MediaQuery.of(context).size.width / 30,
-            ),
-            //google
+              SizedBox(
+                height: MediaQuery.of(context).size.width / 30,
+              ),
 
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: OutlinedButton(
-                onPressed: () {},
+              SizedBox(
+                height: MediaQuery.of(context).size.width / 15,
+              ),
+
+              // Register Button
+              ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {}
+                },
                 style: ElevatedButton.styleFrom(
                   padding:
-                      const EdgeInsets.symmetric(vertical: 12, horizontal: 35),
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 108),
+                  primary: primaryColor,
+                  onPrimary: const Color.fromARGB(255, 255, 255, 255),
                 ),
 
                 //Button Text
-                child: const Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image(
-                      image: AssetImage("assets/google.png"),
-                      width: 20,
-                    ),
-                    Text(
-                      "  Continue with Google",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
+                child: const Text(
+                  "Sign in",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
-            ),
 
-            const SizedBox(
-              height: 15,
-            ),
-            //change to signUp
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text("Not a Member ?"),
-                GestureDetector(
-                  
-                  onTap: widget.changePage,
-                  child: const Text(
-                    "Register Now",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.black,),
+              SizedBox(
+                height: MediaQuery.of(context).size.width / 30,
+              ),
+
+              //google
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: OutlinedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 12, horizontal: 35),
                   ),
-                )
-              ],
-            )
-          ],
+
+                  //Button Text
+                  child: const Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image(
+                        image: AssetImage("assets/google.png"),
+                        width: 20,
+                      ),
+                      Text(
+                        "  Continue with Google",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              const SizedBox(
+                height: 15,
+              ),
+
+              //change to signUp
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("Not a Member ?"),
+                  GestureDetector(
+                    onTap: widget.changePage,
+                    child: const Text(
+                      "Register Now",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

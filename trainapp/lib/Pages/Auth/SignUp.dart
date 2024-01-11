@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:trainapp/Colours/Colors.dart';
+import 'package:trainapp/Services/auth.dart';
 
 class signUp extends StatefulWidget {
   final void Function()? changePage;
@@ -99,6 +100,19 @@ class _SIgnUpItemsState extends State<SIgnUpItems> {
   bool obcureText2 = true;
   bool showIcon = true;
 
+  //controlles
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final conformPasswordController = TextEditingController();
+
+  void singUpFunction() async {
+    final _auth = AuthService();
+    try {
+      await _auth.registerWithEmailAndPassword(
+          emailController.text, passwordController.text);
+    } catch (e) {}
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -122,7 +136,9 @@ class _SIgnUpItemsState extends State<SIgnUpItems> {
 
             // email
             TextFormField(
+              keyboardType: TextInputType.emailAddress,
               obscureText: false,
+              controller: emailController,
               decoration: const InputDecoration(
                 border: UnderlineInputBorder(
                     borderSide: BorderSide(width: 3, color: primaryColor)),
@@ -136,6 +152,7 @@ class _SIgnUpItemsState extends State<SIgnUpItems> {
             ),
             // password
             TextFormField(
+              controller: passwordController,
               obscureText: obcureText2,
               decoration: InputDecoration(
                 border: const UnderlineInputBorder(
@@ -145,8 +162,8 @@ class _SIgnUpItemsState extends State<SIgnUpItems> {
                 hintText: 'Abc@123',
                 prefixIcon: IconButton(
                   icon: showIcon
-                      ? const Icon(Icons.remove_red_eye)
-                      : const Icon(Icons.remove_red_eye_outlined),
+                      ? const Icon(Icons.visibility_off)
+                      : const Icon(Icons.visibility),
                   onPressed: () {
                     setState(() {
                       obcureText2 = !obcureText2;
@@ -163,6 +180,7 @@ class _SIgnUpItemsState extends State<SIgnUpItems> {
 
             // confrom password
             TextFormField(
+              controller: conformPasswordController,
               obscureText: obcureText2,
               decoration: InputDecoration(
                 border: const UnderlineInputBorder(
@@ -172,8 +190,8 @@ class _SIgnUpItemsState extends State<SIgnUpItems> {
                 hintText: 'Abc@123',
                 prefixIcon: IconButton(
                   icon: showIcon
-                      ? const Icon(Icons.remove_red_eye)
-                      : const Icon(Icons.remove_red_eye_outlined),
+                      ? const Icon(Icons.visibility_off)
+                      : const Icon(Icons.visibility),
                   onPressed: () {
                     setState(() {
                       obcureText2 = !obcureText2;
@@ -189,7 +207,7 @@ class _SIgnUpItemsState extends State<SIgnUpItems> {
             ),
             // Register Button
             ElevatedButton(
-              onPressed: () {},
+              onPressed: singUpFunction,
               style: ElevatedButton.styleFrom(
                 padding:
                     const EdgeInsets.symmetric(vertical: 12, horizontal: 108),

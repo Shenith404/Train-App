@@ -1,12 +1,12 @@
 import 'package:trainapp/Entities/TrainRoute.dart';
-import 'package:trainapp/Entities/User.dart';
+import 'package:trainapp/Entities/AppUser.dart';
 
 class Notification {
   String _notificationId = "null";
   String _title = "null";
   String _content = "null";
   TrainRoute? _route;
-  User? _user;
+  AppUser? _user;
 
   Notification(this._notificationId, this._title, this._content, this._route,
       this._user);
@@ -23,6 +23,6 @@ class Notification {
   TrainRoute? get route => _route;
   set route(TrainRoute? value) => _route = value;
 
-  User? get user => _user;
-  set user(User? value) => _user = value;
+  AppUser? get user => _user;
+  set user(AppUser? value) => _user = value;
 }
