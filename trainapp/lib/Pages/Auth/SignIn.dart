@@ -1,5 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:trainapp/Colours/Colors.dart';
+import 'package:trainapp/Services/auth.dart';
+import 'package:trainapp/Widgets/Alert.dart';
+
+import '../../Wrapper.dart';
 
 class Signin extends StatefulWidget {
   final void Function()? changePage;
@@ -99,6 +105,32 @@ class _SIgnUpItemsState extends State<SIgnUpItems> {
   bool showIcon = true;
   @override
   Widget build(BuildContext context) {
+
+    TextEditingController emailController =TextEditingController();
+    TextEditingController passwordController =TextEditingController();
+
+    //Error Message
+    String ?messsage="";
+
+
+    //sign in
+    AuthService _auth = Provider.of<AuthService>(context,listen: false);
+    void signIn () async{
+       dynamic user = await _auth.signWithEmail(emailController.text, passwordController.text);
+       if(user!=null){
+         Navigator.of(context).push(
+           MaterialPageRoute(
+             builder: (context) => Wrapper(),
+           ),
+         );
+       }else  {
+         //show Error message
+         showDialog(context: context,
+             builder: (context)=>Alert(Title: "Try Again",Message: "Entered Credentials are Invalid"));
+       }
+    }
+
+
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -122,6 +154,7 @@ class _SIgnUpItemsState extends State<SIgnUpItems> {
 
               // email
               TextFormField(
+                controller: emailController,
                 keyboardType: TextInputType.emailAddress,
                 obscureText: false,
                 validator: (value) {
@@ -145,6 +178,7 @@ class _SIgnUpItemsState extends State<SIgnUpItems> {
 
               // password
               TextFormField(
+                controller: passwordController,
                 obscureText: obcureText2,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -172,6 +206,9 @@ class _SIgnUpItemsState extends State<SIgnUpItems> {
                   ),
                 ),
               ),
+              SizedBox(
+                child: Text(messsage.toString(),style:TextStyle(color: Colors.red),),
+              ),
 
               SizedBox(
                 height: MediaQuery.of(context).size.width / 30,
@@ -184,7 +221,9 @@ class _SIgnUpItemsState extends State<SIgnUpItems> {
               // Register Button
               ElevatedButton(
                 onPressed: () {
-                  if (_formKey.currentState!.validate()) {}
+                  if (_formKey.currentState!.validate()) {
+                    signIn();
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   padding:

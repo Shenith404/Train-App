@@ -1,5 +1,9 @@
+import "dart:js";
+
 import "package:firebase_core/firebase_core.dart";
 import "package:flutter/material.dart";
+import "package:provider/provider.dart";
+import "package:trainapp/Services/auth.dart";
 import "package:trainapp/wrapper.dart";
 import 'firebase_options.dart';
 
@@ -8,7 +12,11 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MyApp());
+  runApp(
+    ChangeNotifierProvider(
+        create:(context)=>AuthService(),
+        child: MyApp(),)
+  );
 }
 
 class MyApp extends StatelessWidget {

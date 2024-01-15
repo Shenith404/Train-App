@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:trainapp/Colours/Colors.dart';
 import "package:trainapp/Pages/ChatPage.dart";
@@ -19,16 +20,7 @@ class RouteWidget extends StatefulWidget {
 class _RouteWidgetState extends State<RouteWidget> {
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => ChatPage(
-                routeName: widget.routeName,
-                members: widget.Members,
-                routeImage: widget.image)));
-      },
-      child: _routeWidget(context),
-    );
+    return _routeWidget(context);
   }
 
   Padding _routeWidget(BuildContext context) {
@@ -47,35 +39,43 @@ class _RouteWidgetState extends State<RouteWidget> {
                   blurRadius: 5,
                   spreadRadius: -1),
             ]),
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              //Image
-              Hero(
-                tag: "tag-${widget.routeName}",
-                child: CircleAvatar(
-                  backgroundImage: AssetImage(widget.image),
-                  radius: MediaQuery.of(context).size.width / 10,
-                ),
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height / 50),
+        //Animation
+        child: OpenContainer(
+          transitionDuration: Duration(milliseconds: 500),
+          openBuilder: (context, _) => ChatPage(
+              routeName: widget.routeName,
+              members: widget.Members,
+              routeImage: widget.image),
+          closedBuilder: (context, VoidCallback openContainer) => GestureDetector(
+            onTap: openContainer,
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  //Image
+                   CircleAvatar(
+                    backgroundImage: AssetImage(widget.image),
+                    radius: MediaQuery.of(context).size.width / 10,
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height / 50),
 
-              //Route name
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  widget.routeName,
-                  maxLines: 2,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 16),
-                ),
-              ),
+                  //Route name
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      widget.routeName,
+                      maxLines: 2,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 16),
+                    ),
+                  ),
 
-              //Members
-              Text(widget.Members.toString() + " Members"),
-            ]),
+                  //Members
+                  Text(widget.Members.toString() + " Members"),
+                ]),
+          ),
+        ),
       ),
     );
   }

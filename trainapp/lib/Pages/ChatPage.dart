@@ -1,8 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:trainapp/Colours/Colors.dart';
 import 'package:trainapp/Entities/Message%20.dart';
+import 'package:trainapp/Services/ChatService.dart';
+import 'package:trainapp/Services/auth.dart';
 import 'package:trainapp/Widgets/MessageBubble.dart';
+
+import '../Widgets/Loading.dart';
 
 class ChatPage extends StatefulWidget {
   final routeName;
@@ -15,18 +21,37 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
+  final chatService = ChatService();
+  final _auth =FirebaseAuth.instance;
+  ScrollController _scrollController= ScrollController();
   @override
   Widget build(BuildContext context) {
-    var list = Message.generateRandomMessages(30);
+
+    var list = [];
     var now = DateTime.now();
     var formatterDate = DateFormat('dd/MM/yy');
     var formatterTime = DateFormat('kk:mm');
     String actualDate = formatterDate.format(now);
     String actualTime = formatterTime.format(now);
-    return _chatPage(list, actualTime);
+    return _chatPage([], actualTime);
   }
 
   Scaffold _chatPage(List<Message> list, String actualTime) {
+
+    // create controller
+    TextEditingController ?messageContentController = TextEditingController();
+    // create chateservice instance
+
+
+    //send message
+    void sendeMessage() async{
+      if(messageContentController.text.isNotEmpty){
+
+        await chatService.sendMessage(widget.routeName, messageContentController.text, actualTime);
+        messageContentController.clear();
+      }
+
+    }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: bubbleColor2,
@@ -57,29 +82,12 @@ class _ChatPageState extends State<ChatPage> {
         Column(
           children: [
             Expanded(
-              child: ListView(
-                children: <Widget>[
-                  for (var m in list)
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      child: Column(children: [
-                        MessageBubble(
-                          content: m.content,
-                          time: actualTime,
-                          isMe: false,
-                        ),
-                      ]),
-                    )
-                ],
-              ),
+              child:_buildMessageList()
             ),
           ],
         ),
-        Hero(
-          tag: "tag-${widget.routeName}",
-          child: Align(
-            alignment: Alignment.center,
-          ),
+        Align(
+          alignment: Alignment.center,
         ),
 
         //Message Box
@@ -97,6 +105,7 @@ class _ChatPageState extends State<ChatPage> {
                         borderRadius: BorderRadius.circular(30)),
                     child: TextFormField(
                       maxLines: null,
+                      controller: messageContentController,
                       style: TextStyle(color: secondaryColor),
                       cursorColor: secondaryColor,
                       decoration: const InputDecoration(
@@ -132,8 +141,8 @@ class _ChatPageState extends State<ChatPage> {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
                         color: bubbleColor2),
-                    child: const IconButton(
-                        onPressed: null,
+                    child:  IconButton(
+                        onPressed: sendeMessage,
                         icon: Icon(
                           Icons.send,
                           color: secondaryColor,
@@ -146,5 +155,51 @@ class _ChatPageState extends State<ChatPage> {
         ),
       ]),
     );
+
+
+    }
+  Widget _buildMessageList(){
+    return StreamBuilder(
+      stream: chatService.getMessages(widget.routeName),
+      builder: (context,snapshot){
+        if(snapshot.hasError){
+          return Text(snapshot.error.toString());
+        }
+        if(snapshot.connectionState==ConnectionState.waiting){
+          return Loading();
+        }
+        //To get scroll to down
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
+          _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+        });
+        return ListView(
+          children: snapshot.data!.docs
+              .map((doc) => _bildMessageItem(doc))
+              .toList(),
+        );
+      },
+    );
   }
-}
+
+  Widget _bildMessageItem(DocumentSnapshot document) {
+    Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+    debugPrint(data.toString());
+    bool isMe=false;
+
+    //aligmnet of message
+    var allignment = (data["senderId"] == _auth.currentUser!.uid)
+        ? isMe=true
+        : isMe=false;
+
+   
+    return Container(
+
+        child: Column(
+          children: [
+            MessageBubble(content: data['content'], time: data['timeSpan'], isMe: isMe),
+          ],
+        ));
+  }
+  }
+
+

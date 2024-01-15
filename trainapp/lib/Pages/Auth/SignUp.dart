@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:trainapp/Colours/Colors.dart';
 import 'package:trainapp/Services/auth.dart';
 
@@ -27,9 +28,13 @@ class _signUpState extends State<signUp> {
               child: Stack(
                 children: <Widget>[
                   //Image
-                  const Image(
-                    image: AssetImage("assets/train.jpg"),
-                    fit: BoxFit.fill,
+                  Container(
+
+                    child: const Image(
+                      image: AssetImage("assets/train.jpg"),
+                      fit: BoxFit.fill,
+
+                    ),
                   ),
 
                   //white Fader 01
@@ -50,7 +55,7 @@ class _signUpState extends State<signUp> {
 
                   //white Fader 02
                   Container(
-                    height: 450,
+                    height: MediaQuery.of(context).size.height,
                     clipBehavior: Clip.antiAlias,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -106,7 +111,7 @@ class _SIgnUpItemsState extends State<SIgnUpItems> {
   final conformPasswordController = TextEditingController();
 
   void singUpFunction() async {
-    final _auth = AuthService();
+    final _auth = Provider.of<AuthService>(context,listen: false);
     try {
       await _auth.registerWithEmailAndPassword(
           emailController.text, passwordController.text);

@@ -2,11 +2,18 @@ import 'package:flutter/material.dart';
 import "package:trainapp/Colours/Colors.dart";
 import 'package:trainapp/Pages/Auth/LoginOrRegister.dart';
 
-class LandingPage extends StatelessWidget {
+class LandingPage extends StatefulWidget {
   const LandingPage({Key? key});
 
   @override
+  State<LandingPage> createState() => _LandingPageState();
+}
+
+class _LandingPageState extends State<LandingPage> {
+  @override
   Widget build(BuildContext context) {
+    double Height=MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -16,14 +23,20 @@ class LandingPage extends StatelessWidget {
           Stack(
             children: <Widget>[
               //Image
-              const Image(
-                image: AssetImage("assets/train.jpg"),
-                fit: BoxFit.fill,
+
+              Container(
+                width: MediaQuery.of(context).size.width,
+
+                child: Image(
+                  image: AssetImage("assets/train.jpg"),
+                  fit: BoxFit.cover,
+
+                ),
               ),
 
               //white Fader 01
               Container(
-                height: 450,
+
                 clipBehavior: Clip.antiAlias,
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
@@ -39,7 +52,7 @@ class LandingPage extends StatelessWidget {
 
               //white Fader 02
               Container(
-                height: 450,
+
                 clipBehavior: Clip.antiAlias,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
