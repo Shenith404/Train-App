@@ -3,6 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:trainapp/Colours/Colors.dart';
 import 'package:trainapp/Services/auth.dart';
 
+import '../../Widgets/Alert.dart';
+import '../../Wrapper.dart';
+
 class signUp extends StatefulWidget {
   final void Function()? changePage;
   const signUp({
@@ -30,16 +33,17 @@ class _signUpState extends State<signUp> {
                   //Image
                   Container(
 
-                    child: const Image(
-                      image: AssetImage("assets/train.jpg"),
+                    child:  Image(
+                      image: AssetImage("assets/mobileWallpaper.png"),
                       fit: BoxFit.fill,
+                      width:MediaQuery.of(context).size.width ,
 
                     ),
                   ),
 
                   //white Fader 01
                   Container(
-                    height: 450,
+                    height: MediaQuery.of(context).size.width*504/453,
                     clipBehavior: Clip.antiAlias,
                     decoration: const BoxDecoration(
                       gradient: LinearGradient(
@@ -55,7 +59,7 @@ class _signUpState extends State<signUp> {
 
                   //white Fader 02
                   Container(
-                    height: MediaQuery.of(context).size.height,
+                    height: MediaQuery.of(context).size.width*504/453,
                     clipBehavior: Clip.antiAlias,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -101,6 +105,7 @@ class SIgnUpItems extends StatefulWidget {
 }
 
 class _SIgnUpItemsState extends State<SIgnUpItems> {
+  final _formKey = GlobalKey<FormState>();
   bool obcureText1 = true;
   bool obcureText2 = true;
   bool showIcon = true;
@@ -112,10 +117,22 @@ class _SIgnUpItemsState extends State<SIgnUpItems> {
 
   void singUpFunction() async {
     final _auth = Provider.of<AuthService>(context,listen: false);
-    try {
-      await _auth.registerWithEmailAndPassword(
-          emailController.text, passwordController.text);
-    } catch (e) {}
+   if(passwordController.text==conformPasswordController.text){
+     try {
+       var result =await _auth.registerWithEmailAndPassword(
+           emailController.text, passwordController.text);
+       if(result!=null){
+         Navigator.of(context).push(
+           MaterialPageRoute(
+             builder: (context) => Wrapper(),
+           ),
+         );
+       }
+     } catch (e) {}
+   }else{
+     showDialog(context: context,
+         builder: (context)=>const Alert(Title: "Try Again",Message: "Conform Password is not match"));
+   }
   }
 
   @override
@@ -123,125 +140,217 @@ class _SIgnUpItemsState extends State<SIgnUpItems> {
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30),
-        child: Column(
-          children: [
-            //Avatar
-            SizedBox(
-              height: MediaQuery.of(context).size.width / 2.75,
-            ),
-
-            CircleAvatar(
-              backgroundImage: const AssetImage("assets/avatar.jpg"),
-              radius: MediaQuery.of(context).size.width / 5.5,
-            ),
-
-            SizedBox(
-              height: MediaQuery.of(context).size.width / 15,
-            ),
-
-            // email
-            TextFormField(
-              keyboardType: TextInputType.emailAddress,
-              obscureText: false,
-              controller: emailController,
-              decoration: const InputDecoration(
-                border: UnderlineInputBorder(
-                    borderSide: BorderSide(width: 3, color: primaryColor)),
-                labelText: 'Enter your Email',
-                hintText: 'e.g., john_doe@gmail.com', // Add a hint text
-                prefixIcon: Icon(Icons.email),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              //Avatar
+              SizedBox(
+                height: MediaQuery.of(context).size.width / 2.75,
               ),
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).size.width / 30,
-            ),
-            // password
-            TextFormField(
-              controller: passwordController,
-              obscureText: obcureText2,
-              decoration: InputDecoration(
-                border: const UnderlineInputBorder(
-                  borderSide: BorderSide(width: 3, color: primaryColor),
+
+              CircleAvatar(
+                backgroundImage: const AssetImage("assets/avatar.jpg"),
+                radius: MediaQuery.of(context).size.width / 5.5,
+              ),
+
+              SizedBox(
+                height: MediaQuery.of(context).size.width / 15,
+              ),
+
+              // email
+              TextFormField(
+                keyboardType: TextInputType.emailAddress,
+                obscureText: false,
+                controller: emailController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Plese Enter the Email";
+                  } else {
+                    return null;
+                  }
+                },
+                decoration: const InputDecoration(
+                  border: UnderlineInputBorder(
+                      borderSide: BorderSide(width: 3, color: primaryColor)),
+                  labelText: 'Enter your Email',
+                  hintText: 'e.g., john_doe@gmail.com', // Add a hint text
+                  prefixIcon: Icon(Icons.email),
                 ),
-                labelText: 'Enter your Password',
-                hintText: 'Abc@123',
-                prefixIcon: IconButton(
-                  icon: showIcon
-                      ? const Icon(Icons.visibility_off)
-                      : const Icon(Icons.visibility),
-                  onPressed: () {
-                    setState(() {
-                      obcureText2 = !obcureText2;
-                      showIcon = !showIcon;
-                    });
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.width / 30,
+              ),
+              // password
+              TextFormField(
+                controller: passwordController,
+                obscureText: obcureText2,
+                  validator: (value) {
+                    if (value == null || value.length<6) {
+                      return "Plese should be Greater than 6 characters";
+                    } else {
+                      return null;
+                    }
                   },
+                decoration: InputDecoration(
+                  border: const UnderlineInputBorder(
+                    borderSide: BorderSide(width: 3, color: primaryColor),
+                  ),
+                  labelText: 'Enter your Password',
+                  hintText: 'Abc@123',
+                  prefixIcon: IconButton(
+                    icon: showIcon
+                        ? const Icon(Icons.visibility_off)
+                        : const Icon(Icons.visibility),
+                    onPressed: () {
+                      setState(() {
+                        obcureText2 = !obcureText2;
+                        showIcon = !showIcon;
+                      });
+                    },
+                  ),
                 ),
               ),
-            ),
 
-            SizedBox(
-              height: MediaQuery.of(context).size.width / 30,
-            ),
+              SizedBox(
+                height: MediaQuery.of(context).size.width / 30,
+              ),
 
-            // confrom password
-            TextFormField(
-              controller: conformPasswordController,
-              obscureText: obcureText2,
-              decoration: InputDecoration(
-                border: const UnderlineInputBorder(
-                  borderSide: BorderSide(width: 3, color: primaryColor),
+              // confrom password
+              TextFormField(
+                controller: conformPasswordController,
+                obscureText: obcureText2,
+                validator: (value) {
+                  if (value == null || value.length<6) {
+                    return "Plese should be Greater than 6 characters";
+                  } else {
+                    return null;
+                  }
+                },
+                decoration: InputDecoration(
+                  border: const UnderlineInputBorder(
+                    borderSide: BorderSide(width: 3, color: primaryColor),
+                  ),
+                  labelText: 'Enter your Confirm Password',
+                  hintText: 'Abc@123',
+                  prefixIcon: IconButton(
+                    icon: showIcon
+                        ? const Icon(Icons.visibility_off)
+                        : const Icon(Icons.visibility),
+                    onPressed: () {
+                      setState(() {
+                        obcureText2 = !obcureText2;
+                        showIcon = !showIcon;
+                      });
+                    },
+                  ),
                 ),
-                labelText: 'Enter your Confirm Password',
-                hintText: 'Abc@123',
-                prefixIcon: IconButton(
-                  icon: showIcon
-                      ? const Icon(Icons.visibility_off)
-                      : const Icon(Icons.visibility),
-                  onPressed: () {
-                    setState(() {
-                      obcureText2 = !obcureText2;
-                      showIcon = !showIcon;
-                    });
+              ),
+
+              SizedBox(
+                height: MediaQuery.of(context).size.width / 15,
+              ),
+              // Register Button
+             /* ElevatedButton(
+                onPressed: (){
+                  if(_formKey.currentState!.validate()){
+                    singUpFunction();
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 108),
+                  primary: primaryColor,
+                  onPrimary: const Color.fromARGB(255, 255, 255, 255),
+                ),
+
+                //Button Text
+                child: const Text(
+                  "Register",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+
+              SizedBox(
+                height: MediaQuery.of(context).size.width / 30,
+              ),
+              //google
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: OutlinedButton(
+                    onPressed: widget.changePage,
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 35),
+                    ),
+
+                    //Button Text
+                    child: const Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image(
+                          image: AssetImage("assets/google.png"),
+                          width: 20,
+                        ),
+                        Text(
+                          "  Continue with Google",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    )),
+              ),*/
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 60),
+                child: ElevatedButton(
+                  onPressed: (){
+                    if(_formKey.currentState!.validate()){
+                      singUpFunction();
+                    }
                   },
-                ),
-              ),
-            ),
-
-            SizedBox(
-              height: MediaQuery.of(context).size.width / 15,
-            ),
-            // Register Button
-            ElevatedButton(
-              onPressed: singUpFunction,
-              style: ElevatedButton.styleFrom(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 12, horizontal: 108),
-                primary: primaryColor,
-                onPrimary: const Color.fromARGB(255, 255, 255, 255),
-              ),
-
-              //Button Text
-              child: const Text(
-                "Register",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-
-            SizedBox(
-              height: MediaQuery.of(context).size.width / 30,
-            ),
-            //google
-
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: OutlinedButton(
-                  onPressed: widget.changePage,
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 12, horizontal: 35),
+
+                    primary: primaryColor,
+                    onPrimary: const Color.fromARGB(255, 255, 255, 255),
+                  ),
+
+                  //Button Text
+                  child: const Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+
+                      Text(
+                        " Sign in",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+
+              SizedBox(
+                height: MediaQuery.of(context).size.width / 30,
+              ),
+
+              //google
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 60),
+                child: OutlinedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+
                   ),
 
                   //Button Text
@@ -254,35 +363,38 @@ class _SIgnUpItemsState extends State<SIgnUpItems> {
                         width: 20,
                       ),
                       Text(
-                        "  Continue with Google",
+                        " Google",
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],
-                  )),
-            ),
-
-            const SizedBox(
-              height: 15,
-            ),
-            //change to signUp
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text("Alrady a Member ? "),
-                GestureDetector(
-                  onTap: widget.changePage,
-                  child: const Text(
-                    "Sign in Now",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.black),
                   ),
-                )
-              ],
-            )
-          ],
+                ),
+              ),
+
+
+              const SizedBox(
+                height: 15,
+              ),
+              //change to signUp
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("Alrady a Member ? "),
+                  GestureDetector(
+                    onTap: widget.changePage,
+                    child: const Text(
+                      "Sign in Now",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.black),
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

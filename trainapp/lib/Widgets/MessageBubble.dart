@@ -33,10 +33,7 @@ class MessageBubble extends StatelessWidget {
             !isMe ? Text(
               sender.toString(),
               style: TextStyle(color: shadowColor),
-            ):Text(
-              "You",
-              style: TextStyle(color: shadowColor),
-            ),
+            ):SizedBox(),
             Text(
               content,
               style: TextStyle(color: !isMe ? secondaryColor : primaryColor),

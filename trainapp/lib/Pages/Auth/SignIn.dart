@@ -29,14 +29,20 @@ class _SigninState extends State<Signin> {
               child: Stack(
                 children: <Widget>[
                   //Image
-                  const Image(
-                    image: AssetImage("assets/train.jpg"),
-                    fit: BoxFit.fill,
+                  Container(
+
+                    child:  Image(
+                      width:MediaQuery.of(context).size.width ,
+                      image: AssetImage("assets/mobileWallpaper.png"),
+                      fit: BoxFit.fill,
+
+
+                    ),
                   ),
 
                   //white Fader 01
                   Container(
-                    height: 450,
+                    height: MediaQuery.of(context).size.width*504/453,
                     clipBehavior: Clip.antiAlias,
                     decoration: const BoxDecoration(
                       gradient: LinearGradient(
@@ -52,7 +58,7 @@ class _SigninState extends State<Signin> {
 
                   //white Fader 02
                   Container(
-                    height: 450,
+                    height: MediaQuery.of(context).size.width*504/453,
                     clipBehavior: Clip.antiAlias,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -103,14 +109,15 @@ class _SIgnUpItemsState extends State<SIgnUpItems> {
   bool obcureText1 = true;
   bool obcureText2 = true;
   bool showIcon = true;
+  TextEditingController emailController =TextEditingController();
+  TextEditingController passwordController =TextEditingController();
+
+  //Error Message
+  String ?messsage="";
   @override
   Widget build(BuildContext context) {
 
-    TextEditingController emailController =TextEditingController();
-    TextEditingController passwordController =TextEditingController();
 
-    //Error Message
-    String ?messsage="";
 
 
     //sign in
@@ -218,29 +225,64 @@ class _SIgnUpItemsState extends State<SIgnUpItems> {
                 height: MediaQuery.of(context).size.width / 15,
               ),
 
-              // Register Button
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    signIn();
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 12, horizontal: 108),
-                  primary: primaryColor,
-                  onPrimary: const Color.fromARGB(255, 255, 255, 255),
-                ),
+            /*  // Register Button
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 50),
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      signIn();
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
 
-                //Button Text
-                child: const Text(
-                  "Sign in",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
+                    primary: primaryColor,
+                    onPrimary: const Color.fromARGB(255, 255, 255, 255),
+                  ),
+
+                  //Button Text
+                  child: const Text(
+                    "Sign in",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),
+*/
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 60),
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      signIn();
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+
+                    primary: primaryColor,
+                    onPrimary: const Color.fromARGB(255, 255, 255, 255),
+                  ),
+
+                  //Button Text
+                  child: const Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+
+                      Text(
+                        " Sign in",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
 
               SizedBox(
                 height: MediaQuery.of(context).size.width / 30,
@@ -248,12 +290,11 @@ class _SIgnUpItemsState extends State<SIgnUpItems> {
 
               //google
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
+                padding: const EdgeInsets.symmetric(horizontal: 60),
                 child: OutlinedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 12, horizontal: 35),
+
                   ),
 
                   //Button Text
@@ -266,7 +307,7 @@ class _SIgnUpItemsState extends State<SIgnUpItems> {
                         width: 20,
                       ),
                       Text(
-                        "  Continue with Google",
+                        " Google",
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,

@@ -38,6 +38,7 @@ class AuthService  extends ChangeNotifier{
       //register user as Authernticate user
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
+      return result.user;
 
       //create user in database
       _firestore.collection("AppUsers").doc(result.user!.uid).set({
@@ -45,7 +46,9 @@ class AuthService  extends ChangeNotifier{
         'email' :result.user!.email,
         'role' : "none"
       });
-    } catch (e) {}
+    } catch (e) {
+      return null;
+    }
   }
 
   //sign out

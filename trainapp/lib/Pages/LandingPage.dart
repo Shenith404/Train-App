@@ -24,19 +24,16 @@ class _LandingPageState extends State<LandingPage> {
             children: <Widget>[
               //Image
 
-              Container(
-                width: MediaQuery.of(context).size.width,
+              Image(
+                image: AssetImage("assets/mobileWallpaper.png"),
+                fit: BoxFit.cover,
+                width:MediaQuery.of(context).size.width ,
 
-                child: Image(
-                  image: AssetImage("assets/train.jpg"),
-                  fit: BoxFit.cover,
-
-                ),
               ),
 
               //white Fader 01
               Container(
-
+                height: MediaQuery.of(context).size.width*504/453,
                 clipBehavior: Clip.antiAlias,
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
@@ -52,7 +49,7 @@ class _LandingPageState extends State<LandingPage> {
 
               //white Fader 02
               Container(
-
+                height: MediaQuery.of(context).size.width*504/453,
                 clipBehavior: Clip.antiAlias,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -69,8 +66,8 @@ class _LandingPageState extends State<LandingPage> {
             ],
           ),
 
-          const SizedBox(
-            height: 30,
+           SizedBox(
+            height: MediaQuery.of(context).size.height/10,
           ),
 
           //Text line one
@@ -85,8 +82,8 @@ class _LandingPageState extends State<LandingPage> {
             ),
           ),
 
-          const SizedBox(
-            height: 10,
+          SizedBox(
+            height: MediaQuery.of(context).size.height/40,
           ),
 
           //Gray Text line
@@ -99,8 +96,8 @@ class _LandingPageState extends State<LandingPage> {
             ),
           ),
 
-          const SizedBox(
-            height: 40,
+          SizedBox(
+            height: MediaQuery.of(context).size.height/20,
           ),
 
           //Get Stated Button
