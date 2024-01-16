@@ -33,10 +33,10 @@ class _ChatPageState extends State<ChatPage> {
     var formatterTime = DateFormat('kk:mm');
     String actualDate = formatterDate.format(now);
     String actualTime = formatterTime.format(now);
-    return _chatPage([], actualTime);
+    return _chatPage(actualTime,now.toString());
   }
 
-  Scaffold _chatPage(List<Message> list, String actualTime) {
+  Scaffold _chatPage(var actualTime,createdDate) {
 
     // create controller
     TextEditingController ?messageContentController = TextEditingController();
@@ -47,7 +47,7 @@ class _ChatPageState extends State<ChatPage> {
     void sendeMessage() async{
       if(messageContentController.text.isNotEmpty){
 
-        await chatService.sendMessage(widget.routeName, messageContentController.text, actualTime);
+        await chatService.sendMessage(widget.routeName, messageContentController.text,actualTime,createdDate);
         messageContentController.clear();
       }
 
@@ -84,6 +84,9 @@ class _ChatPageState extends State<ChatPage> {
             Expanded(
               child:_buildMessageList()
             ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height/10,
+            )
           ],
         ),
         Align(
@@ -173,6 +176,7 @@ class _ChatPageState extends State<ChatPage> {
           _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
         });
         return ListView(
+          controller: _scrollController,
           children: snapshot.data!.docs
               .map((doc) => _bildMessageItem(doc))
               .toList(),
@@ -196,7 +200,7 @@ class _ChatPageState extends State<ChatPage> {
 
         child: Column(
           children: [
-            MessageBubble(content: data['content'], time: data['timeSpan'], isMe: isMe),
+            MessageBubble(sender: data['senderEmail'],content: data['content'], time: data['timeSpan'], isMe: isMe),
           ],
         ));
   }

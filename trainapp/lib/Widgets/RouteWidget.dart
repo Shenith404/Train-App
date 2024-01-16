@@ -41,6 +41,7 @@ class _RouteWidgetState extends State<RouteWidget> {
             ]),
         //Animation
         child: OpenContainer(
+            transitionType: ContainerTransitionType.fadeThrough,
           transitionDuration: Duration(milliseconds: 500),
           openBuilder: (context, _) => ChatPage(
               routeName: widget.routeName,

@@ -5,12 +5,13 @@ class MessageBubble extends StatelessWidget {
   final String content;
   final String time;
   final bool isMe;
+  final String sender;
 
   const MessageBubble({
     Key? key,
     required this.content,
     required this.time,
-    required this.isMe,
+    required this.isMe, required this.sender,
   }) : super(key: key);
 
   @override
@@ -27,13 +28,20 @@ class MessageBubble extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
+          crossAxisAlignment: isMe? CrossAxisAlignment.end :CrossAxisAlignment.start,
           children: [
+            !isMe ? Text(
+              sender.toString(),
+              style: TextStyle(color: shadowColor),
+            ):Text(
+              "You",
+              style: TextStyle(color: shadowColor),
+            ),
             Text(
               content,
               style: TextStyle(color: !isMe ? secondaryColor : primaryColor),
             ),
-            SizedBox(height: 2),
+            SizedBox(height: 1),
             Text(
               time,
               style: TextStyle(

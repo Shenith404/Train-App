@@ -9,11 +9,15 @@ class ChatService extends ChangeNotifier{
   //firestore instance
   FirebaseFirestore _firestore =FirebaseFirestore.instance;
 
+
+
   //Send Message
   Future<void> sendMessage(
       String routeName,
       String messageContent,
       String timeStamp,
+      String createdDate,
+
       ) async{
 
     //get current user infor
@@ -22,7 +26,7 @@ class ChatService extends ChangeNotifier{
 
      //create new user
     Message newMessage = Message(
-    currentuserId +"-"+ routeName+ '-'+timeStamp
+    createdDate
         ,currentuserId,
         currentuserEmail,
         timeStamp,
@@ -39,7 +43,7 @@ class ChatService extends ChangeNotifier{
     return  _firestore.collection("chatPages")
         .doc(routeName)
         .collection("Messages")
-        .orderBy('timeSpan',descending:false).snapshots();
+        .orderBy('messageId',descending:false).snapshots();
   }
 
 }
