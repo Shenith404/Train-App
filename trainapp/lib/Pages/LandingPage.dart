@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import "package:trainapp/Colours/Colors.dart";
 import 'package:trainapp/Pages/Auth/LoginOrRegister.dart';
@@ -62,23 +63,48 @@ class _LandingPageState extends State<LandingPage> {
                     ],
                   ),
                 ),
+              ),
+              Column(
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.width,
+                  ),
+                  Center(
+                    child: FadeInDown(
+                      from: 20,
+                      child: const Text(
+                        "Train App ",
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               )
             ],
           ),
 
            SizedBox(
-            height: MediaQuery.of(context).size.height/10,
+            height: MediaQuery.of(context).size.height/15,
           ),
 
           //Text line one
-          const Text(
-            "This sequence truncates the visible text at the content area’s edge. ",
-            maxLines: 2,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              overflow: TextOverflow.ellipsis,
+          FadeInUp(
+            from: 50,
+            child: const Text(
+              "This sequence truncates the visible text at the content area’s edge. ",
+              maxLines: 2,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
           ),
 
@@ -87,37 +113,43 @@ class _LandingPageState extends State<LandingPage> {
           ),
 
           //Gray Text line
-          const Text(
-            "So, the truncation occurs in the mid-section of the character.",
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w300,
-              color: primaryColor,
-            ),
-          ),
+          FadeInUp(
+            from: 60,
+             child: Text(
+              "So, the truncation occurs in the mid-section of the character.",
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w300,
+                color: primaryColor,
+              ),
+                       ),
+           ),
 
           SizedBox(
             height: MediaQuery.of(context).size.height/20,
           ),
 
           //Get Stated Button
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => LoginOrRegister()));
-            },
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 35),
-              primary: primaryColor,
-              onPrimary: const Color.fromARGB(255, 255, 255, 255),
-            ),
+          FadeInUp(
+            from: 70,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => LoginOrRegister()));
+              },
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 35),
+                primary: primaryColor,
+                onPrimary: const Color.fromARGB(255, 255, 255, 255),
+              ),
 
-            //Button Text
-            child: const Text(
-              "Get Started",
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
+              //Button Text
+              child: const Text(
+                "Get Started",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
           ),

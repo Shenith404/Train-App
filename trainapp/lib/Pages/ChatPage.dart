@@ -85,7 +85,7 @@ class _ChatPageState extends State<ChatPage> {
               child:_buildMessageList()
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height/10,
+              height: MediaQuery.of(context).size.height/8,
             )
           ],
         ),

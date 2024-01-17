@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -150,9 +151,12 @@ class _SIgnUpItemsState extends State<SIgnUpItems> {
                 height: MediaQuery.of(context).size.width / 2.5,
               ),
 
-              CircleAvatar(
-                backgroundImage: const AssetImage("assets/avatar.jpg"),
-                radius: MediaQuery.of(context).size.width / 5.5,
+              FadeInUp(
+                from: 25,
+                child: CircleAvatar(
+                  backgroundImage: const AssetImage("assets/avatar.jpg"),
+                  radius: MediaQuery.of(context).size.width / 5.5,
+                ),
               ),
 
               SizedBox(
@@ -160,23 +164,26 @@ class _SIgnUpItemsState extends State<SIgnUpItems> {
               ),
 
               // email
-              TextFormField(
-                controller: emailController,
-                keyboardType: TextInputType.emailAddress,
-                obscureText: false,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Plese Enter the Email";
-                  } else {
-                    return null;
-                  }
-                },
-                decoration: const InputDecoration(
-                  border: UnderlineInputBorder(
-                      borderSide: BorderSide(width: 3, color: primaryColor)),
-                  labelText: 'Enter your Email',
-                  hintText: 'e.g., john_doe@gmail.com', // Add a hint text
-                  prefixIcon: Icon(Icons.email),
+              FadeInUp(
+                from: 50,
+                child: TextFormField(
+                  controller: emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  obscureText: false,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Plese Enter the Email";
+                    } else {
+                      return null;
+                    }
+                  },
+                  decoration: const InputDecoration(
+                    border: UnderlineInputBorder(
+                        borderSide: BorderSide(width: 3, color: primaryColor)),
+                    labelText: 'Enter your Email',
+                    hintText: 'e.g., john_doe@gmail.com', // Add a hint text
+                    prefixIcon: Icon(Icons.email),
+                  ),
                 ),
               ),
               SizedBox(
@@ -184,32 +191,35 @@ class _SIgnUpItemsState extends State<SIgnUpItems> {
               ),
 
               // password
-              TextFormField(
-                controller: passwordController,
-                obscureText: obcureText2,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Plese Enter the Password";
-                  } else {
-                    return null;
-                  }
-                },
-                decoration: InputDecoration(
-                  border: const UnderlineInputBorder(
-                    borderSide: BorderSide(width: 3, color: primaryColor),
-                  ),
-                  labelText: 'Enter your Password',
-                  hintText: 'Abc@123',
-                  prefixIcon: IconButton(
-                    icon: showIcon
-                        ? const Icon(Icons.visibility_off)
-                        : const Icon(Icons.visibility),
-                    onPressed: () {
-                      setState(() {
-                        obcureText2 = !obcureText2;
-                        showIcon = !showIcon;
-                      });
-                    },
+              FadeInUp(
+                from: 60,
+                child: TextFormField(
+                  controller: passwordController,
+                  obscureText: obcureText2,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Plese Enter the Password";
+                    } else {
+                      return null;
+                    }
+                  },
+                  decoration: InputDecoration(
+                    border: const UnderlineInputBorder(
+                      borderSide: BorderSide(width: 3, color: primaryColor),
+                    ),
+                    labelText: 'Enter your Password',
+                    hintText: 'Abc@123',
+                    prefixIcon: IconButton(
+                      icon: showIcon
+                          ? const Icon(Icons.visibility_off)
+                          : const Icon(Icons.visibility),
+                      onPressed: () {
+                        setState(() {
+                          obcureText2 = !obcureText2;
+                          showIcon = !showIcon;
+                        });
+                      },
+                    ),
                   ),
                 ),
               ),
@@ -251,34 +261,37 @@ class _SIgnUpItemsState extends State<SIgnUpItems> {
                 ),
               ),
 */
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 60),
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      signIn();
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
+              FadeInUp(
+                from: 70,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 60),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        signIn();
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
 
-                    primary: primaryColor,
-                    onPrimary: const Color.fromARGB(255, 255, 255, 255),
-                  ),
+                      primary: primaryColor,
+                      onPrimary: const Color.fromARGB(255, 255, 255, 255),
+                    ),
 
-                  //Button Text
-                  child: const Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                    //Button Text
+                    child: const Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
 
-                      Text(
-                        " Sign in",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                        Text(
+                          " Sign in",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -289,31 +302,34 @@ class _SIgnUpItemsState extends State<SIgnUpItems> {
               ),
 
               //google
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 60),
-                child: OutlinedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
+              FadeInUp(
+                from: 80,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 60),
+                  child: OutlinedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
 
-                  ),
+                    ),
 
-                  //Button Text
-                  child: const Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image(
-                        image: AssetImage("assets/google.png"),
-                        width: 20,
-                      ),
-                      Text(
-                        " Google",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                    //Button Text
+                    child: const Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image(
+                          image: AssetImage("assets/google.png"),
+                          width: 20,
                         ),
-                      ),
-                    ],
+                        Text(
+                          " Google",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -323,21 +339,24 @@ class _SIgnUpItemsState extends State<SIgnUpItems> {
               ),
 
               //change to signUp
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text("Not a Member ?"),
-                  GestureDetector(
-                    onTap: widget.changePage,
-                    child: const Text(
-                      "Register Now",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
+              FadeInUp(
+                from: 90,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Not a Member ?"),
+                    GestureDetector(
+                      onTap: widget.changePage,
+                      child: const Text(
+                        "Register Now",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
                       ),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               )
             ],
           ),

@@ -1,3 +1,4 @@
+import "package:animate_do/animate_do.dart";
 import "package:flutter/material.dart";
 import "package:trainapp/Colours/Colors.dart";
 
@@ -16,38 +17,43 @@ class MessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: isMe ? Alignment.topRight : Alignment.topLeft,
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-        constraints:
-            BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
-        decoration: BoxDecoration(
-          color: isMe ? bubbleColor1 : bubbleColor2,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Column(
-          crossAxisAlignment: isMe? CrossAxisAlignment.end :CrossAxisAlignment.start,
-          children: [
-            !isMe ? Text(
-              sender.toString(),
-              style: TextStyle(color: shadowColor),
-            ):SizedBox(),
-            Text(
-              content,
-              style: TextStyle(color: !isMe ? secondaryColor : primaryColor),
-            ),
-            SizedBox(height: 1),
-            Text(
-              time,
-              style: TextStyle(
-                color: !isMe ? secondaryColor : primaryColor,
-                fontSize: 8,
-                fontWeight: FontWeight.bold,
+    return FadeInLeft(
+
+      from: isMe? 20 :-20,
+      duration: Duration(milliseconds: 300),
+      child: Align(
+        alignment: isMe ? Alignment.topRight : Alignment.topLeft,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+          constraints:
+              BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
+          decoration: BoxDecoration(
+            color: isMe ? bubbleColor1 : bubbleColor2,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Column(
+            crossAxisAlignment: isMe? CrossAxisAlignment.end :CrossAxisAlignment.start,
+            children: [
+              !isMe ? Text(
+                sender.toString(),
+                style: TextStyle(color: shadowColor),
+              ):SizedBox(),
+              Text(
+                content,
+                style: TextStyle(color: !isMe ? secondaryColor : primaryColor),
               ),
-            ),
-          ],
+              SizedBox(height: 1),
+              Text(
+                time,
+                style: TextStyle(
+                  color: !isMe ? secondaryColor : primaryColor,
+                  fontSize: 8,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
