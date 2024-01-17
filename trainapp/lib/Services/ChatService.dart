@@ -17,16 +17,18 @@ class ChatService extends ChangeNotifier{
       String messageContent,
       String timeStamp,
       String createdDate,
+      DateTime now
 
       ) async{
 
     //get current user infor
      final String currentuserId =_auth.currentUser!.uid;
      final String currentuserEmail = _auth.currentUser!.email.toString();
+     print((createdDate));
 
      //create new user
     Message newMessage = Message(
-    createdDate
+    createdDate+now.millisecond.toString()
         ,currentuserId,
         currentuserEmail,
         timeStamp,
