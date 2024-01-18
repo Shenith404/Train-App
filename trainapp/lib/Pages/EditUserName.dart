@@ -1,20 +1,45 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import "package:trainapp/Colours/Colors.dart";
 import 'package:trainapp/Pages/Auth/LoginOrRegister.dart';
+import 'package:trainapp/Pages/RoutePage.dart';
+import 'package:trainapp/Services/auth.dart';
 
-class LandingPage extends StatefulWidget {
-  const LandingPage({Key? key});
+import '../Entities/AppUser.dart';
+
+class EditUserName extends StatefulWidget {
+  const EditUserName({Key? key});
 
   @override
-  State<LandingPage> createState() => _LandingPageState();
+  State<EditUserName> createState() => _EditUserNameState();
 }
 
-class _LandingPageState extends State<LandingPage> {
+class _EditUserNameState extends State<EditUserName> {
+  TextEditingController userNameController=TextEditingController();
+  AuthService authService=AuthService();
+
+  @override
+  void initState() {
+    initializeUser();
+  }
+
+  void initializeUser() async{
+
+    AppUser ?user =await authService.getAppUser(FirebaseAuth.instance.currentUser!.uid);
+    userNameController.text =  user!=null ? user.userName:"AppUser";
+  }
+  void updateUserName() async{
+    await authService.updateUserName(FirebaseAuth.instance.currentUser!.uid, userNameController.text);
+
+  }
+
+
   @override
   Widget build(BuildContext context) {
     double Height=MediaQuery.of(context).size.width;
+
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -67,9 +92,8 @@ class _LandingPageState extends State<LandingPage> {
               ),
               Column(
                 children: [
-                  SizedBox(
-                    height: MediaQuery.of(context).size.width/1.4,
-                  ),
+                  SizedBox(height: Height * 0.7),
+
                   Center(
                     child: FadeInDown(
                       from: 20,
@@ -83,75 +107,48 @@ class _LandingPageState extends State<LandingPage> {
                       ),
                     ),
                   ),
+                  SizedBox(height: Height * 0.1),  // 10% of screen height
+
+                  // Second Row: Change your name
+                  const Text(
+                    "Change your name",
+                    style: TextStyle(fontSize: 18, color: primaryColor),
+                  ),
+
+                  SizedBox(height: Height * 0.02),  // 2% of screen height
+
+
+                  // Fourth Row: Name Entering Box
+                   Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 50),
+                    child: TextField(
+                      controller: userNameController,
+                      decoration: InputDecoration(hintText: "Add The name"),
+                    ),
+                  ),
+
+                  SizedBox(height: Height * 0.08),
+
+                  // Fifth Row: Continue Button
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: primaryColor,
+                    ),
+                    onPressed: () {
+                     if(!userNameController.text.isEmpty){
+                       updateUserName();
+                       Navigator.of(context).push(MaterialPageRoute(builder: (context)=>RoutePage()));
+                     }
+                    },
+                    child: const Text("Next",style: TextStyle(color: secondaryColor),),
+                  ),
                 ],
+
               )
             ],
           ),
 
-           SizedBox(
-            height: MediaQuery.of(context).size.height/17,
-          ),
 
-          //Text line one
-          FadeInUp(
-            from: 50,
-            child: const Text(
-              "This sequence truncates the visible text at the content area’s edge. ",
-              maxLines: 2,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ),
-
-          SizedBox(
-            height: MediaQuery.of(context).size.height/40,
-          ),
-
-          //Gray Text line
-          FadeInUp(
-            from: 60,
-             child: Text(
-              "So, the truncation occurs in the mid-section of the character.",
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w300,
-                color: primaryColor,
-              ),
-                       ),
-           ),
-
-          SizedBox(
-            height: MediaQuery.of(context).size.height/20,
-          ),
-
-          //Get Stated Button
-          FadeInUp(
-            from: 70,
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => LoginOrRegister()));
-              },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 35),
-                primary: primaryColor,
-                onPrimary: const Color.fromARGB(255, 255, 255, 255),
-              ),
-
-              //Button Text
-              child: const Text(
-                "Get Started",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ),
         ],
       ),
     );

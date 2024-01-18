@@ -1,5 +1,7 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:trainapp/Colours/Colors.dart';
 import 'package:trainapp/Services/auth.dart';
@@ -120,19 +122,23 @@ class _SIgnUpItemsState extends State<SIgnUpItems> {
     final _auth = Provider.of<AuthService>(context,listen: false);
    if(passwordController.text==conformPasswordController.text){
      try {
-       var result =await _auth.registerWithEmailAndPassword(
+       dynamic result =await _auth.registerWithEmailAndPassword(
            emailController.text, passwordController.text);
-       if(result!=null){
+       if(result.runtimeType == User){
          Navigator.of(context).push(
            MaterialPageRoute(
              builder: (context) => Wrapper(),
            ),
          );
+       }else{
+         showDialog(context: context,
+             builder: (context)=> Alert(Title: "Try Again",Message: result.toString()));
+
        }
      } catch (e) {}
    }else{
      showDialog(context: context,
-         builder: (context)=>const Alert(Title: "Try Again",Message: "Conform Password is not match"));
+         builder: (context)=>const Alert(Title: "Try Again",Message: "Confirm Password is not match"));
    }
   }
 
@@ -150,16 +156,28 @@ class _SIgnUpItemsState extends State<SIgnUpItems> {
                 height: MediaQuery.of(context).size.width / 2.75,
               ),
 
-              FadeInUp(
+              FadeInDown(
                 from: 25,
-                child: CircleAvatar(
-                  backgroundImage: const AssetImage("assets/avatar.jpg"),
-                  radius: MediaQuery.of(context).size.width / 5.5,
+                child: FadeInUp(
+                  from: 25,
+                  child: Center(
+                    child: FadeInDown(
+                      from: 20,
+                      child:  Text(
+                        "Train Tracker Community",
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                        style:GoogleFonts.salsa(
+                            fontSize: 40
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
 
               SizedBox(
-                height: MediaQuery.of(context).size.width / 15,
+                height: MediaQuery.of(context).size.width / 10,
               ),
 
               // email

@@ -1,3 +1,5 @@
+import "dart:math";
+
 import "package:animate_do/animate_do.dart";
 import "package:flutter/material.dart";
 import "package:trainapp/Colours/Colors.dart";
@@ -17,9 +19,10 @@ class MessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var random = Random().nextInt(30).toDouble();
     return FadeInLeft(
 
-      from: isMe? 20 :-20,
+      from: isMe? random :-random,
       duration: Duration(milliseconds: 300),
       child: Align(
         alignment: isMe ? Alignment.topRight : Alignment.topLeft,

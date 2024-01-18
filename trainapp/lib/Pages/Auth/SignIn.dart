@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:trainapp/Colours/Colors.dart';
 import 'package:trainapp/Services/auth.dart';
@@ -73,10 +74,18 @@ class _SigninState extends State<Signin> {
                       ),
                     ),
                   ),
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.width,
+                      ),
+
+                    ],
+                  ),
 
                   SIgnUpItems(
                     changePage: widget.changePage,
-                  )
+                  ),
                 ],
               ),
             ),
@@ -125,7 +134,7 @@ class _SIgnUpItemsState extends State<SIgnUpItems> {
     AuthService _auth = Provider.of<AuthService>(context,listen: false);
     void signIn () async{
        dynamic user = await _auth.signWithEmail(emailController.text, passwordController.text);
-       if(user!=null){
+       if(user.runtimeType==User){
          Navigator.of(context).push(
            MaterialPageRoute(
              builder: (context) => Wrapper(),
@@ -134,7 +143,7 @@ class _SIgnUpItemsState extends State<SIgnUpItems> {
        }else  {
          //show Error message
          showDialog(context: context,
-             builder: (context)=>Alert(Title: "Try Again",Message: "Entered Credentials are Invalid"));
+             builder: (context)=>Alert(Title: "Try Again",Message: user.toString()));
        }
     }
 
@@ -151,16 +160,22 @@ class _SIgnUpItemsState extends State<SIgnUpItems> {
                 height: MediaQuery.of(context).size.width / 2.5,
               ),
 
-              FadeInUp(
-                from: 25,
-                child: CircleAvatar(
-                  backgroundImage: const AssetImage("assets/avatar.jpg"),
-                  radius: MediaQuery.of(context).size.width / 5.5,
+              Center(
+                child: FadeInDown(
+                  from: 20,
+                  child:  Text(
+                    "Train Tracker Community",
+                    maxLines: 2,
+                    textAlign: TextAlign.center,
+                    style:GoogleFonts.salsa(
+                        fontSize: 40
+                    ),
+                  ),
                 ),
               ),
 
               SizedBox(
-                height: MediaQuery.of(context).size.width / 15,
+                height: MediaQuery.of(context).size.width / 12,
               ),
 
               // email

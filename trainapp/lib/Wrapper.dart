@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:trainapp/Pages/EditUserName.dart';
 import 'package:trainapp/Pages/LandingPage.dart';
 import 'package:trainapp/Pages/RoutePage.dart';
 
@@ -21,7 +22,7 @@ class Wrapper extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return RoutePage();
+            return EditUserName();
           } else {
             return LandingPage();
           }

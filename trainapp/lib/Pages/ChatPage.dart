@@ -24,20 +24,16 @@ class _ChatPageState extends State<ChatPage> {
   final chatService = ChatService();
   final _auth =FirebaseAuth.instance;
   ScrollController _scrollController= ScrollController();
-  var now = DateTime.now();
-  var formatterDate = DateFormat('dd/MM/yy');
-  var formatterTime = DateFormat('kk:mm');
   @override
   Widget build(BuildContext context) {
 
-    var list = [];
-    String actualTime = formatterTime.format(now);
 
 
-    return _chatPage(actualTime,now.toString(),now);
+    return _chatPage();
   }
 
-  Scaffold _chatPage(var actualTime,createdDate,now) {
+  Scaffold _chatPage() {
+
 
     // create controller
     TextEditingController ?messageContentController = TextEditingController();
@@ -47,8 +43,16 @@ class _ChatPageState extends State<ChatPage> {
     //send message
     void sendeMessage() async{
       if(messageContentController.text.isNotEmpty){
+        var now = DateTime.now();
+        var formatterDate = DateFormat('dd/MM/yy');
+        var formatterTime = DateFormat('kk:mm');
+        String actualTime = formatterTime.format(now);
 
-        await chatService.sendMessage(widget.routeName, messageContentController.text,actualTime,createdDate,now);
+        /* setState(() {
+           now = DateTime.now();
+        });*/
+
+        await chatService.sendMessage(widget.routeName, messageContentController.text,actualTime,now);
         messageContentController.clear();
       }
 
@@ -201,7 +205,7 @@ class _ChatPageState extends State<ChatPage> {
 
         child: Column(
           children: [
-            MessageBubble(sender: data['senderEmail'],content: data['content'], time: data['timeSpan'], isMe: isMe),
+            MessageBubble(sender: data['senderUserName'] ?? "App user",content: data['content'], time: data['timeSpan'], isMe: isMe),
           ],
         ));
   }

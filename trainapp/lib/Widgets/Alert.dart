@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:trainapp/Colours/Colors.dart';
 
 class Alert extends StatelessWidget {
   final String Message;
@@ -9,13 +11,18 @@ class Alert extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(Title),
+      backgroundColor: primaryColor,
+      title: Text(Title,
+      style: GoogleFonts.ibmPlexMono(
+        color: Colors.red,
+        fontSize: 20,
+      ),),
       actions: [
 
       ],
       content:   Text(Message.toString(),
         maxLines: 2,
-        style: TextStyle(
+        style: GoogleFonts.ibmPlexMono(
           color: Colors.red,
         ),),
       elevation: 21,

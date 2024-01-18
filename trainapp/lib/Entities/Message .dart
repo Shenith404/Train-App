@@ -6,10 +6,11 @@ class Message {
   String _messageId = "null";
   String _senderId="";
   String _senderEmail= "";
+  String _senderUserName="";
   String _timeSpan = "null";
   String _content = "null";
 
-  Message(this._messageId,this._senderId,this._senderEmail, this._timeSpan, this._content);
+  Message(this._messageId,this._senderId,this._senderEmail, this._senderUserName,this._timeSpan, this._content);
 
   String get messageId => _messageId;
   set messageId(String value) => _messageId = value;
@@ -37,6 +38,7 @@ class Message {
     return  {
       'messageId' :_messageId,
       'content': _content,
+      'senderUserName':_senderUserName,
       'timeSpan':_timeSpan,
       'senderId':_senderId,
       'senderEmail':_senderEmail,
