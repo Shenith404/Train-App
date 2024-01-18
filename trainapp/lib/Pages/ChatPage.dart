@@ -126,17 +126,11 @@ class _ChatPageState extends State<ChatPage> {
                           prefixIcon: IconButton(
                             onPressed: null,
                             icon: Icon(
-                              Icons.emoji_emotions,
+                              Icons.keyboard,
                               color: secondaryColor,
                             ),
                           ),
-                          suffixIcon: IconButton(
-                            onPressed: null,
-                            icon: Icon(
-                              Icons.gps_fixed_outlined,
-                              color: secondaryColor,
-                            ),
-                          )),
+                          ),
                     ),
                   ),
                 ),

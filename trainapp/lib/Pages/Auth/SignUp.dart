@@ -379,7 +379,7 @@ class _SIgnUpItemsState extends State<SIgnUpItems> {
               ),
 
               //google
-              FadeInUp(
+           /*   FadeInUp(
                 from: 90,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 60),
@@ -409,7 +409,7 @@ class _SIgnUpItemsState extends State<SIgnUpItems> {
                     ),
                   ),
                 ),
-              ),
+              ),*/
 
 
               const SizedBox(

@@ -45,7 +45,17 @@ class Message {
 
     };
   }
-
-
-
+  static Message fromMap(Map<String, dynamic> map) {
+    return Message(
+      map['messageId'],
+      map['senderId'],
+      map['senderEmail'],
+      map['senderUserName'],
+      map['timeSpan'],
+      map['content'],
+    );
+  }
 }
+
+
+
