@@ -14,7 +14,8 @@ class ChatPage extends StatefulWidget {
   final routeName;
   final routeImage;
   final members;
-  const ChatPage({super.key, this.routeName, this.routeImage, this.members});
+  final routeID;
+  const ChatPage({super.key, this.routeName, this.routeImage, this.members, this.routeID});
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -24,6 +25,26 @@ class _ChatPageState extends State<ChatPage> {
   final chatService = ChatService();
   final _auth =FirebaseAuth.instance;
   ScrollController _scrollController= ScrollController();
+
+
+  String documentId="";
+  Future<void> getDocId(String routeName) async{
+
+    await FirebaseFirestore.instance
+        .collection("train_routes")
+        .where("routeName", isEqualTo: routeName)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((QueryDocumentSnapshot document) async {
+
+       setState(() {
+         documentId = document.id;
+       });
+
+      });
+    });
+
+  }
   @override
   Widget build(BuildContext context) {
 
@@ -86,7 +107,7 @@ class _ChatPageState extends State<ChatPage> {
         //Message List
         Column(
           children: [
-            Expanded(
+           Expanded(
               child:_buildMessageList()
             ),
             SizedBox(
@@ -162,8 +183,9 @@ class _ChatPageState extends State<ChatPage> {
     }
   Widget _buildMessageList(){
     return StreamBuilder(
-      stream: chatService.getMessages(widget.routeName),
+      stream: chatService.getMessages(widget.routeID),
       builder: (context,snapshot){
+
         if(snapshot.hasError){
           return Text(snapshot.error.toString());
         }
@@ -204,5 +226,6 @@ class _ChatPageState extends State<ChatPage> {
         ));
   }
   }
+
 
 

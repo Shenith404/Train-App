@@ -1,6 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:trainapp/Colours/Colors.dart';
 import 'package:trainapp/Entities/TrainRoute.dart';
 import 'package:trainapp/Widgets/RouteWidget.dart';
@@ -62,16 +63,37 @@ class _RoutePageState extends State<RoutePage> {
     _loadTrainRoutes();
   }
 
+
   Future<void> _loadTrainRoutes() async {
     List<TrainRoute> routes = await TrainRoute.getTrainRoutes();
     setState(() {
       trainRoutes = routes;
       debugPrint(trainRoutes.toString());
-      trainRoutesFiltered= trainRoutes;
+       trainRoutesFiltered= trainRoutes;
     });
   }
+
+  Future<void>  delete (String routeID) async{
+
+  /*await FirebaseFirestore.instance
+      .collection('train_routes')
+      .where('routeId', isEqualTo: routeID)
+      .get()
+      .then((QuerySnapshot<Map<String, dynamic>> querySnapshot) {
+  querySnapshot.docs.forEach((doc) {
+  doc.reference.delete();
+  });
+  });*/
+    await FirebaseFirestore.instance
+    .collection('train_routes')
+    .doc(routeID).delete();
+  _loadTrainRoutes();
+
+
+}
   @override
   Widget build(BuildContext context) {
+    double screenWidth =MediaQuery.of(context).size.width;
 
 
 
@@ -84,34 +106,82 @@ class _RoutePageState extends State<RoutePage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(' Train Routes'),
-          actions: [
+          automaticallyImplyLeading: false,
+          elevation: 0,
+          title: Padding(
+            padding:  EdgeInsets.symmetric(horizontal:screenWidth*0.015),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(" Train Tracker Community",
+                style: GoogleFonts.salsa(),),
+                IconButton(onPressed: () {
+                  _showLogoutConfirmationDialog(context);
+
+                }, icon: Icon(Icons.logout))
+
+              ],
+            ),
+          ),
+
+         /* actions: [
+
+
             IconButton(onPressed: () {
               _showLogoutConfirmationDialog(context);
 
             }, icon: Icon(Icons.logout))
-          ],
+          ],*/
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              searchBox(),
-              Center(
-                //show Train Routes
-
-                child: Wrap(
-                  children: <Widget>[
-                    for (var route in trainRoutesFiltered)
-                      RouteWidget(
-                        Members: route.trainList.length,
-                        image: "assets/train.jpg",
-                        routeName: route.routeName,
+        body: Stack(
+          children: [SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(height: MediaQuery.of(context).size.height*0.1,),
+                Padding(
+                    padding:  EdgeInsets.symmetric(horizontal: screenWidth*0.07),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("All Routes",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),),
+                          SizedBox(height: 15,),
+                          Text(trainRoutesFiltered.length.toString() + " Routes Are Available"),
+                        ],
                       ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+
+             Center(
+               //show Train Routes
+
+               child: Wrap(
+                 children: <Widget>[
+                   for (var route in trainRoutesFiltered)
+                     RouteWidget(
+                       date : DateTime.now().year.toString() +'/' +DateTime.now().month.toString()+'/'+DateTime.now().day.toString(),
+                       image: "assets/train.jpg",
+                       routeName: route.routeName,
+                       userId: route.userId,
+                       routeID: route.routeId,
+                       delete: () async{
+                         delete(route.routeId);
+                       },
+                     ),
+                 ],
+               ),
+             ),
+                          ],
+                        ),
           ),
+             searchBox(screenWidth),]
         ),
         //Add route
         floatingActionButton: FloatingActionButton(
@@ -127,6 +197,8 @@ class _RoutePageState extends State<RoutePage> {
       ),
     );
   }
+
+
 
   void _showAddRouteDialog(BuildContext context) {
     String routeName = '';
@@ -189,17 +261,19 @@ class _RoutePageState extends State<RoutePage> {
     });
   }
 
-  Padding searchBox() {
+  Padding searchBox(double screenWidth) {
     return Padding(
-      padding: const EdgeInsets.all(30.0),
+
+      padding:  EdgeInsets.symmetric(horizontal:screenWidth*0.04,vertical: screenWidth*0.015),
       child: Container(
+
         width: double.infinity,
-        height: 40,
+        height: 45,
         decoration: BoxDecoration(
             color: Color.fromARGB(255, 240, 236, 236),
             borderRadius: BorderRadius.circular(20)),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8.0 ,vertical: 4),
+          padding: EdgeInsets.symmetric(horizontal: 8.0 ),
           child: TextField(
             onChanged: (value) => _runSearch(value),
             decoration: InputDecoration(

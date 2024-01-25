@@ -26,13 +26,7 @@ class Wrapper extends StatelessWidget {
             return CircularProgressIndicator();
           } else if (snapshot.hasData) {
             // User is signed in
-            if (snapshot.data != null) {
-              // If the user just logged in, show EditUserName
-              return EditUserName();
-            } else {
-              // If the user was already logged in, show RoutePage
-              return RoutePage();
-            }
+            return EditUserName();
           } else {
             // User is not signed in
             return LandingPage();

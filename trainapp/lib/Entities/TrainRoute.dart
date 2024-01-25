@@ -35,13 +35,20 @@ class TrainRoute {
       'chatList': route.chatList.map((message) => message.toMap()).toList(),
       'trainList': route.trainList,
     });
+
+
+
+
+
+
+
   }
 
   static Future<List<TrainRoute>> getTrainRoutes() async {
     QuerySnapshot snapshot = await routesCollection.get();
     return snapshot.docs
         .map((doc) => TrainRoute(
-      doc['routeId'],
+      doc.id,
       doc['routeName'],
         doc['userId'],
       (doc['chatList'] as List<dynamic>)

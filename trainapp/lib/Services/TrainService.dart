@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 
-class TrainService {
+class TrainService extends ChangeNotifier{
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
   CollectionReference _routesCollection = FirebaseFirestore.instance.collection('train_routes');
 
@@ -19,4 +20,20 @@ class TrainService {
   Stream<QuerySnapshot> getTrainRoutes() {
     return _routesCollection.snapshots();
   }
+  
+  //Add Members to collection
+  Future<void> addMembers(String uId,String routeId) async{
+    
+    await FirebaseFirestore.instance
+        .collection("train_routes")
+        .doc(routeId).collection("Members")// Use the UID as the document ID
+        .add({
+      // You can add more fields as needed
+      'userId': uId,
+      // Add other fields if necessary
+    });
+
+  }
+
+
 }

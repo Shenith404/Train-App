@@ -11,6 +11,23 @@ class ChatService extends ChangeNotifier {
   FirebaseAuth _auth = FirebaseAuth.instance;
   // Firestore instance
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  // find the document
+  String documentId="";
+  Future<void> getDocId(String routeName) async{
+
+    await FirebaseFirestore.instance
+        .collection("train_routes")
+        .where("routeName", isEqualTo: routeName)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((QueryDocumentSnapshot document) async {
+
+        documentId = document.id;
+
+      });
+    });
+
+  }
 
   // Send Message
   Future<void> sendMessage(
@@ -32,10 +49,6 @@ class ChatService extends ChangeNotifier {
 
 
 
-
-
-
-
     // Create a new message
     Message newMessage = Message(
       newMessageId,
@@ -46,23 +59,39 @@ class ChatService extends ChangeNotifier {
       messageContent,
     );
 
-    // Add new message to the database
+    /*// Add new message to the database
     await _firestore
         .collection("chatPages")
         .doc(routeName)
         .collection("Messages")
+        .add(newMessage.toMap());*/
+
+
+
+    // Add new message
+    await getDocId(routeName);
+    await FirebaseFirestore.instance
+        .collection("train_routes")
+        .doc(documentId)
+        .collection("Messages")
         .add(newMessage.toMap());
+
+
   }
 
   // Get messages
-  Stream<QuerySnapshot> getMessages(String routeName) {
+  Stream<QuerySnapshot> getMessages(String documentId) {
+    debugPrint(documentId);
+
+
     return _firestore
-        .collection("chatPages")
-        .doc(routeName)
+        .collection("train_routes")
+        .doc(documentId)
         .collection("Messages")
         .orderBy('messageId', descending: false)
         .snapshots();
-  }
 
 
+
+}
 }

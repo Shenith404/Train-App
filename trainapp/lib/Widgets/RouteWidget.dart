@@ -1,23 +1,42 @@
 import 'package:animations/animations.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:trainapp/Colours/Colors.dart';
 import "package:trainapp/Pages/ChatPage.dart";
+import 'package:trainapp/Services/TrainService.dart';
 
 class RouteWidget extends StatefulWidget {
   final String image;
   final String routeName;
-  final int Members;
+  final String date;
+  final String userId;
+  final routeID;
+  final Future<void> Function() delete;
   const RouteWidget(
       {super.key,
       required this.image,
       required this.routeName,
-      required this.Members});
+      required this.delete, required this.userId, this.routeID, required this.date});
 
   @override
   State<RouteWidget> createState() => _RouteWidgetState();
 }
 
 class _RouteWidgetState extends State<RouteWidget> {
+
+  // instane of firebaase auth
+  var _auth=FirebaseAuth.instance;
+
+  //instance of Train service
+  var trainService =TrainService();
+
+  //Register member to chatlist
+  Future<void> register() async{
+    await trainService.addMembers(_auth.currentUser!.uid, widget.routeID);
+
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return _routeWidget(context);
@@ -28,7 +47,7 @@ class _RouteWidgetState extends State<RouteWidget> {
       padding: const EdgeInsets.all(8.0),
       child: Container(
         width: MediaQuery.of(context).size.width / 2.3,
-        height: MediaQuery.of(context).size.height / 3.5,
+        height: MediaQuery.of(context).size.height / 3.4,
         decoration: BoxDecoration(
             color: secondaryColor,
             borderRadius: BorderRadius.circular(10),
@@ -45,39 +64,90 @@ class _RouteWidgetState extends State<RouteWidget> {
           transitionDuration: Duration(milliseconds: 500),
           openBuilder: (context, _) => ChatPage(
               routeName: widget.routeName,
-              members: widget.Members,
-              routeImage: widget.image),
+              members: 0,
+              routeImage: widget.image,
+          routeID: widget.routeID,),
           closedBuilder: (context, VoidCallback openContainer) => GestureDetector(
-            onTap: openContainer,
+            onTap: () {
+            
+              openContainer;
+
+
+            },
+
             child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
+              children: [  Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  //Image
-                   CircleAvatar(
-                    backgroundImage: AssetImage(widget.image),
-                    radius: MediaQuery.of(context).size.width / 10,
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height / 50),
+                  _auth.currentUser!.uid ==widget.userId ?
+                  IconButton(onPressed:(){
+                    _showDeleteRouteDialog(context);
+                  }, icon: Icon(Icons.delete)):const SizedBox(height: 30,),
+                ],
 
-                  //Route name
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      widget.routeName,
-                      maxLines: 2,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 16),
-                    ),
-                  ),
+              ),
+                Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      //Delete
 
-                  //Members
-                  Text(widget.Members.toString() + " Members"),
-                ]),
+                      //Image
+                       CircleAvatar(
+                        backgroundImage: AssetImage(widget.image),
+                        radius: MediaQuery.of(context).size.width / 12,
+                      ),
+                      SizedBox(height: MediaQuery.of(context).size.height / 50),
+
+                      //Route name
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          widget.routeName,
+                          maxLines: 2,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                      ),
+                      Text(widget.date),
+
+
+                    ]),
+              ],
+            ),
           ),
         ),
       ),
+    );
+  }
+  void _showDeleteRouteDialog(BuildContext context) {
+    String routeName = '';
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delete Route'),
+
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                widget.delete();
+                Navigator.pop(context);
+
+              },
+              child: Text('Delete'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
